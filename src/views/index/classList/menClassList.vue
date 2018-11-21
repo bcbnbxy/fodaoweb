@@ -1,0 +1,115 @@
+<template>
+	<div class='page'>
+		
+		<div class="bannerBox">
+			<img src="../../../assets/img/menList_banner.png"/>
+		</div>
+		
+		<div class="indexList" v-for="(item,index) in goodsClassS" :key="item.id">
+	      <img :src="item.goodsImg2">
+	      <div class="indexListCenter">
+	        <p>{{item.goodsName}}</p>
+	        <div class="price">￥{{item.unitPrice}}</div>
+	        <span>{{item.viewNum}}人已参与</span>
+	        <div class="btn"  @click="classListFun(item.id)">立即学习</div>
+	      </div>
+	    </div>
+	</div>
+</template>
+
+<script>
+	
+    import {goodsClass} from '@/api/index'
+	export default {
+	    data() {
+	      return {
+	      	 goodsClassS: [],
+	      }
+	    },
+	    mounted() {
+	    	document.title='男性智慧课程';
+	     	this.queryGoodsClass();
+	    },
+	    methods: {	
+		  // 课程列表
+	      queryGoodsClass(){
+
+	        goodsClass().then((res)=>{
+	          // console.log(res)
+	          if (res.code === 'Y'){
+	            this.goodsClassS = res.data;
+	          }
+	        })
+	      },
+	      // 查看课程列表详情
+	      classListFun(val){
+	        this.$router.push({path: '/classList/' + val})
+	      },
+	    }
+	 }
+</script>
+
+<style lang="less" scoped>
+  @wu: 100vw/375;
+  
+  .bannerBox{
+  	width: 100%;
+  	height: 140*@wu;
+  	&>img{
+  		width: 100%;
+  		height: 100%;
+  	}
+  }
+  
+  .indexList{
+    overflow: hidden;
+    padding: 21*@wu 0 ;
+    margin: 0 15*@wu;
+    border-bottom: 1px solid #F6F6F6;
+    &>img{
+      width: 120*@wu;
+      height: 90*@wu;
+      pointer-events: none;
+    }
+    .indexListCenter{
+    	position: relative;
+       margin-left:5*@wu ;
+       display: inline-block;
+       vertical-align: top;
+	   p{
+		    font-style: inherit;
+		    font-size: 14*@wu;
+		    color: #333;
+		    max-width: 200*@wu;
+		    margin: 10*@wu 0 15*@wu;
+	   }  
+	    .price{
+	   		color: #F88182;
+	   		font-size: 15*@wu;
+	    }
+	    span{
+	 		color: #999;
+	        font-size: 12*@wu;
+	    }
+		.btn{
+			position: absolute;
+			right: 0;
+			bottom: 18*@wu;
+			background-color: #FFC73E;
+			color: #fff;
+			font-size: 14*@wu;
+			border-radius: 12*@wu;
+			text-align: center;
+			width: 78*@wu;
+			height: 28*@wu;
+			line-height: 28*@wu;
+		}
+    }
+    
+     
+  }
+   .indexList:last-child{
+    	border-bottom: 0;
+    }
+  
+</style>
